@@ -1,0 +1,64 @@
+[
+{
+	"uri": "//localhost:1313/vi/",
+	"title": "Triển khai Transit Gateway để tạo kết nối giữa các VPC",
+	"tags": [],
+	"description": "",
+	"content": "Triển khai Transit Gateway để tạo kết nối giữa các VPC Tổng quan Ở workshop này, chúng ta sẽ tiến hành việc triển khai Transit Gateway nhằm đảm bảo sự kết nối giữa các VPC. Thêm vào đó, chúng ta cũng sẽ triển khai EC2 Instance với mỗi VPC để kiểm tra tính kết nối giữa các VPC. Lựa chọn giữa VPC peering và Transit Gateway Về bản chất, VPC peering và Transit Gateway đều giúp người dùng kết nối các VPC với nhau trong mạng lưới nội bộ. Nhưng tùy vào quy mô của hệ thống mà chúng ta chọn. Với hệ thống chỉ có từ 3 VPC trở xuống ta có thể sử dụng VPC peering với 3 peering connection. Khi hệ thống phức tạp, nhiều VPC thì ta sẽ phải khởi tạo nhiều peering connection tạo sự bất tiện, khó kiểm soát và khả năng mở rộng thấp. Cũng vì đó mà xuất hiện Transit Gateway. Transit Gateway Được sinh ra để giải quyết những nhược điểm của Peering Conenction, Transite Gateway được dùng để kết nối các VPC và mạng on-premises thông qua một hub trung tâm. Điều này đơn giản hoá mạng và kết thúc các mối quan hệ định tuyến phức tạp. VPC Amazon Virtual Private Cloud (Amazon VPC) là dịch vụ cho phép bạn khởi chạy các tài nguyên AWS trong mạng ảo cô lập theo logic mà bạn xác định. Bạn có toàn quyền kiểm soát môi trường mạng ảo của mình, bao gồm lựa chọn dải địa chỉ IP, tạo các mạng con, cấu hình các bảng định tuyến và cổng kết nối mạng. EC2 Instance Là một cơ sở hạ tầng điện toán đám mây được cung cấp bởi Amazon Web Services (AWS) giúp cung cấp tài nguyên máy tính ảo hoá theo yêu cầu.Tương tự với máy chủ , EC2 được tạo nhanh chóng và đảm bảo tính sẵn sàng cao nhất. Nội dung: Khởi tạo VPC Khởi tạo EC2 Khởi tạo Transit Gateway Gắn Transit Gateway Attachment với từng VPC Tạo Transit Gateway route table và kiểm tra kết nối Dọn dẹp tài nguyên "
+},
+{
+	"uri": "//localhost:1313/vi/1-vpc/",
+	"title": "Khởi tạo VPC",
+	"tags": [],
+	"description": "",
+	"content": "Ở phần này, bạn sẽ tạo các VPC với dải IP tương ứng trong sơ đồ\nTạo VPC Để tạo VPC, chúng ta thực hiện như sau:\nTruy cập vào VPC. Ở thanh điều hướng bên trái, chọn VPC. Ở trang khởi đầu, chọn Create VPC. Ở trang Create VPC, thiết lập VPC Public với các thông số như sau: VPC and more Nhập tên VPC Nhập dải IP theo sơ đồ Chọn số lượng AZ, ở bài này mình chọn 1 Chọn số lượng public subnet 1, private subnet 0 Chọn Create VPC Ở trang Create VPC, thiết lập VPC Private với các thông số như sau: VPC and more Nhập tên VPC Nhập dải IP theo sơ đồ Chọn số lượng AZ, ở bài này mình chọn 1 Chọn số lượng public subnet 0, private subnet 1 Chọn Create VPC Thực hiện tương tự với 2 VPC còn lại Vào mục Subnet. Chọn subnet vừa tạo trong quá trình tạo VPC Chọn Actions -\u0026gt; Edit subnet settings -\u0026gt; Chọn Enable auto-assign public IPv4 -\u0026gt; Save Thực hiện với các subnet còn lại "
+},
+{
+	"uri": "//localhost:1313/vi/2-ec2/",
+	"title": "Khởi tạo EC2",
+	"tags": [],
+	"description": "",
+	"content": "Ở phần này, bạn sẽ tạo EC2 cho các VPC.\nTạo EC2 Để tạo EC2 nhanh chóng ta thực hiện các bước sau\nTruy cập EC2 Chọn Instance -\u0026gt; Create Instance Chọn AIM, ở đây mình chọn Amazon Linux 2AMI Chọn t2.micro Chọn key pair, nếu chưa có key pair chọn create key pair là chọn theo hình dưới Ở mục Network settings chọn edit Chọn VPC, Subnet tương ứng với EC2 muốn cài. Chọn Create security groups, Nhập tên SG, mô tả, tạo thêm 1 SG rules và cấu hình như sau với EC2 đặt ở public: Launch Instance để tạo EC2 Với EC2 đặt ở private ta cấu hình Sg như sau Thục hiện tương tự với 2 EC2 private còn lại. Kiểm tra kết nôi của public Mình sử dụng MobaX.. nên các bước sẽ như sau Chọn SSH -\u0026gt; nhập Remote host (là Public IPv4 của EC2) -\u0026gt; Specify username \u0026ldquo;ec2-user\u0026rdquo; -\u0026gt; Port 22 -\u0026gt; Advanced SSH settings -\u0026gt; use private kye và chọn file key được tải về sau khi tạo keypair Khi thự hiện kết nối EC2 thành công, ta nhập đoạn sau để kiểm tra ping amazon.com -c5. Trả về kết quả như ảnh là EC2 đã kết nối với internet thành công "
+},
+{
+	"uri": "//localhost:1313/vi/3-transit-gateway/",
+	"title": "Khởi tạo Transit gateway",
+	"tags": [],
+	"description": "",
+	"content": "Ở bước này, chúng ta sẽ triển khai Transit Gateway để kết nối các VPC.\nTruy cập VPC, chọn Transit Gateway, Create Transit Gateway Điền name tag, bỏ tick default route table associations, default route table propagation rồi Create Transit Gateway "
+},
+{
+	"uri": "//localhost:1313/vi/4-transit-gateway-attachment/",
+	"title": "Khởi tạo Transit Gateway Attachment",
+	"tags": [],
+	"description": "",
+	"content": "Ở bước này, Chúng ta sẽ tạo Transit Gateway Attachment cho các VPC.\nTruy cập VPC, chọn Transit Gateway, Create Transit Gateway Điền name tag, lựa Transit gateưay vừa tạo, Attachment type VPC. Ở mục VPC Attachment chọn VPC cần gắn, các subnet của vpc hiện ra và vì mình chỉ tạo 1 subnet cho mỗi VPC nên không cần lựa chọn subnet. Sau đó chọn Create Transit Gateway Attachment để tạo. Thực hiện các bước tương tự với 3 VPC còn lại. "
+},
+{
+	"uri": "//localhost:1313/vi/5-transit-gateway-route-table/",
+	"title": "Transit gateway route table và kiểm tra Kết quả",
+	"tags": [],
+	"description": "",
+	"content": "Để Transit Gateway Attachment hoạt động được, mình cần tạo 1 route table cho chúng. Ở bước này, bạn sẽ tạo route table và kiểm tra hệ thống đã kết nối với nhau hay không.\nTruy cập vào Transit Gateway route table Chọn Transit Gateway và Create Transit Gateway route table. Chọn route table vừa tạo -\u0026gt; Associatons -\u0026gt; Create Associations Chọn Attachment -\u0026gt; Create Associations Thực hiện tương tự với 3 attachment còn lại Tiếp tục với route table trên -\u0026gt; Propagations -\u0026gt; Create Propagations Chọn Attachment -\u0026gt; Create Propagations Thực hiện tương tự với 3 attachment còn lại Tiếp đến chúng ta sẽ chỉnh sửa route table để thêm route từ transit gateway\nVào route table -\u0026gt; chọn route table -\u0026gt; routes -\u0026gt; edit routes Với Public route table, mình add route rồi tùy chỉnh như sau Điền dải IP 172.12.0.0 Chọn Transit Gateway. Chọn Transit Gateway mà mình đã tạo từ bước trước. Save changes để lưu Với Private table, mình add route rồi tùy chỉnh như sau Điền dải IP 0.0.0.0/0 Chọn Transit Gateway. Chọn Transit Gateway mà mình đã tạo từ bước trước. Save changes để lưu Thực hiện tương tự với 2 private table còn lại Kiểm tra kết nối giữa các VPC\nMình sẽ SSH từ EC2 public sang EC2 private để kiểm tra kết nối giữa các private EC2 ssh -i \u0026#34;file-name\u0026#34; ec2-user@\u0026lt;private ec2 ip\u0026gt; Sau khi truy cập vào EC2 private 1 mình ping qua EC2 private 2 và 3 Như vậy, các VPC đã được kết nối với nhau thông qua Transit gateway. Để theo dõi transit gateways, bạn có thể tham khảo bài viết này. CloudWatch metrics\n"
+},
+{
+	"uri": "//localhost:1313/vi/6-clean-up/",
+	"title": "Dọn dẹp tài nguyên",
+	"tags": [],
+	"description": "",
+	"content": "Transit gateway attachments\nChọn Transit gateway attachments -\u0026gt; Actions -\u0026gt; Delete Transit gateway attachments -\u0026gt; Nhập delete. Thực hiện tương tự với các Transit gateway attachments còn lại Transit gateway route table\nChọn Transit gateway route table -\u0026gt; Actions -\u0026gt; Delete Transit gateway route table -\u0026gt; Nhập delete. Transit gateway\nChọn Transit gateway -\u0026gt; Actions -\u0026gt; Delete Transit gateway -\u0026gt; Nhập delete. EC2\nChọn Instance -\u0026gt; Instance state -\u0026gt; Terminate instance -\u0026gt; Nhập delete. Thực hiện tương tự với các Instance còn lại VPC\nChọn VPC -\u0026gt; Actions -\u0026gt; Delete VPC Thực hiện tương tự với các VPC còn lại "
+},
+{
+	"uri": "//localhost:1313/vi/categories/",
+	"title": "Categories",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "//localhost:1313/vi/tags/",
+	"title": "Tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+}]
